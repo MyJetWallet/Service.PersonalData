@@ -32,9 +32,6 @@ namespace Service.PersonalData.Grpc
         
         [OperationContract]
         ValueTask UpdateKycAsync(UpdateKycGrpcContract request);
-        
-        [OperationContract]
-        ValueTask<GetPersonalDataByStatusResponse> GetPersonalDataByStatus(GetPersonalDataByStatusRequest request);
 
         [OperationContract]
         ValueTask<PersonalDataBatchResponseContract> GetAsync(GetRequest request);
@@ -47,5 +44,8 @@ namespace Service.PersonalData.Grpc
         
         [OperationContract]
         ValueTask<PersonalDataBatchResponseContract> SearchAsync(SearchRequest request);
+        
+        [OperationContract]
+        ValueTask<ResultGrpcResponse> CreateRecordAsync(PersonalDataGrpcModel personalData);
     }
 }

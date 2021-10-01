@@ -237,12 +237,6 @@ namespace Service.PersonalData.Services
             });
         }
 
-        public ValueTask<GetPersonalDataByStatusResponse> GetPersonalDataByStatus(
-            GetPersonalDataByStatusRequest request)
-        {
-            throw new NotImplementedException();
-        }
-        
         public async ValueTask<PersonalDataGrpcResponseContract> GetByIdAsync(GetByIdRequest request)
         {
             Console.WriteLine("Requesting data by ID: " + request.Id);
@@ -329,6 +323,39 @@ namespace Service.PersonalData.Services
                 PersonalDatas = entities.Concat(entitiesFromCache).Select(pd => pd.ToGrpcModel())
             };
 
+        }
+
+        public async ValueTask<ResultGrpcResponse> CreateRecordAsync(PersonalDataGrpcModel request)
+        {
+            try
+            {
+                var pd = request.ToDomainModel();
+
+                await _personalDataRepository.CreateAsync(pd, Program.EncodingKey);
+
+                var logData = ToJson(pd);
+
+                var log = new AuditLogGrpcModel
+                {
+                    TraderId = request.Id,
+                    ProcessId = request.AuditLog.ProcessId,
+                    Ip = request.AuditLog.Ip,
+                    ServiceName = request.AuditLog.ServiceName,
+                    Context = request.AuditLog.Context,
+                    Before = string.Empty,
+                    UpdatedData = logData,
+                    After = logData
+                };
+
+                await _auditLogService.RegisterEventAsync(log);
+
+                return new ResultGrpcResponse {Ok = true};
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return new ResultGrpcResponse {Ok = false};
+            }
         }
     }
 }
