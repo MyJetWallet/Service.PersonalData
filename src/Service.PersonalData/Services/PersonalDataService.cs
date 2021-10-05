@@ -64,7 +64,7 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
-
+                _personalDataCache.UpdateCache(pd);
                 return new ResultGrpcResponse {Ok = true};
             }
             catch (Exception e)
@@ -99,8 +99,6 @@ namespace Service.PersonalData.Services
 
                 var updatedPd =
                     await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
-
-                _personalDataCache.UpdateCache(updatedPd);
                 
                 var log = new AuditLogGrpcModel
                 {
@@ -115,7 +113,7 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
-
+                _personalDataCache.UpdateCache(updatedPd);
                 await _publisher.PublishAsync(new ()
                 {
                     TraderId = request.Id
@@ -231,6 +229,7 @@ namespace Service.PersonalData.Services
             };
 
             await _auditLogService.RegisterEventAsync(log);
+            _personalDataCache.UpdateCache(updatedPd);
             await _publisher.PublishAsync(new ()
             {
                 TraderId = request.Id
