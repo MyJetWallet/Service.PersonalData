@@ -55,28 +55,28 @@ public class DatabaseContext : DbContext
         {
             modelBuilder.Entity<PersonalDataPostgresEntity>().ToTable(PersonalDataTableName);
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasKey(e => e.Id);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Email).IsRequired().HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.FirstName).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.LastName).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.City).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Phone).IsRequired(false).HasMaxLength(128);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Email).IsRequired().HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.FirstName).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.LastName).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.City).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Phone).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.DateOfBirth).IsRequired(false);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.PostalCode).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CountryOfCitizenship).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CountryOfResidence).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.EmailHash).IsRequired(false).HasMaxLength(128);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.PostalCode).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CountryOfCitizenship).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CountryOfResidence).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.EmailHash).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Sex).IsRequired(false);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.KYC).IsRequired(false);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Confirm).IsRequired(false);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.ConfirmPhone).IsRequired(false);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Address).IsRequired(false).HasMaxLength(128);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.Address).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.USCitizen).IsRequired(false);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.IpOfRegistration).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CountryOfRegistration).IsRequired(false).HasMaxLength(128);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.IpOfRegistration).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CountryOfRegistration).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.IsInternal);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.EmailGroupId).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.BrandId).IsRequired(false).HasMaxLength(128);
-            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.PlatformType).IsRequired(false).HasMaxLength(128);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.EmailGroupId).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.BrandId).IsRequired(false).HasMaxLength(512);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.PlatformType).IsRequired(false).HasMaxLength(512);
             
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.Id).IsUnique();
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.Email).IsUnique();
@@ -88,11 +88,11 @@ public class DatabaseContext : DbContext
         {
             modelBuilder.Entity<TraderDocument>().ToTable(DocumentsTableName);
             modelBuilder.Entity<TraderDocument>().HasKey(e => e.Id);
-            modelBuilder.Entity<TraderDocument>().Property(e => e.TraderId).IsRequired().HasMaxLength(128);
+            modelBuilder.Entity<TraderDocument>().Property(e => e.TraderId).IsRequired().HasMaxLength(512);
             modelBuilder.Entity<TraderDocument>().Property(e => e.DocumentType).IsRequired();
             modelBuilder.Entity<TraderDocument>().Property(e => e.DateTime).IsRequired();
-            modelBuilder.Entity<TraderDocument>().Property(e => e.Mime).IsRequired().HasMaxLength(128);
-            modelBuilder.Entity<TraderDocument>().Property(e => e.FileName).IsRequired(false).HasMaxLength(128);
+            modelBuilder.Entity<TraderDocument>().Property(e => e.Mime).IsRequired().HasMaxLength(512);
+            modelBuilder.Entity<TraderDocument>().Property(e => e.FileName).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<TraderDocument>().Property(e => e.IsDeleted);
             
             modelBuilder.Entity<TraderDocument>().HasIndex(e => e.Id).IsUnique();
