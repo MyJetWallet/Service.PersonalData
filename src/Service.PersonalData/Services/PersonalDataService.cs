@@ -347,7 +347,11 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
-
+                _personalDataCache.UpdateCache(pd);
+                await _publisher.PublishAsync(new ()
+                {
+                    TraderId = request.Id
+                });
                 return new ResultGrpcResponse {Ok = true};
             }
             catch (Exception e)
