@@ -5,8 +5,4 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="SimpleTrading.PersonalData.Abstractions" Version="1.0.10" />
-  </ItemGroup>
-
 </Project>

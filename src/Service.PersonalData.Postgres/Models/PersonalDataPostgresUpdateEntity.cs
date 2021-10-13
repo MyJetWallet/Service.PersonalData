@@ -1,5 +1,5 @@
 using System;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
+using Service.PersonalData.Domain.Models;
 
 namespace Service.PersonalData.Postgres.Models
 {

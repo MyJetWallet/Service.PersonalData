@@ -1,5 +1,5 @@
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Grpc.Models;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
 
 namespace Service.PersonalData.Mappers
 {
@@ -31,7 +31,8 @@ namespace Service.PersonalData.Mappers
                 ConfirmPhone = src.ConfirmPhone,
                 BrandId = src.BrandId,
                 PlatformType = src.PlatformType,
-                CreatedAt = src.CreatedAt
+                CreatedAt = src.CreatedAt,
+                IsTechnical = src.IsTechnical
             };
         }
         
@@ -77,7 +78,8 @@ namespace Service.PersonalData.Mappers
                 USCitizen = src.USCitizen,
                 Address = src.Address,
                 BrandId = src.BrandId,
-                PlatformType = src.PlatformType
+                PlatformType = src.PlatformType,
+                IsTechnical = src.IsTechnical
             };
         }
     }

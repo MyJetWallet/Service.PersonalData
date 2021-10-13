@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Postgres.Models;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
 
 namespace Service.PersonalData.Services
 {

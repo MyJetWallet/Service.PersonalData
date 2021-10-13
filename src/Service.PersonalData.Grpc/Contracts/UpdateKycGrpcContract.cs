@@ -1,5 +1,5 @@
 using System.Runtime.Serialization;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
+using Service.PersonalData.Domain.Models;
 
 namespace Service.PersonalData.Grpc.Contracts
 {

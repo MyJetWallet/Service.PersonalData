@@ -77,7 +77,8 @@ public class DatabaseContext : DbContext
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.EmailGroupId).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.BrandId).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.PlatformType).IsRequired(false).HasMaxLength(512);
-            
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.IsTechnical).HasDefaultValue(false);
+
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.Id).IsUnique();
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.Email).IsUnique();
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.CreatedAt).IsUnique(false);

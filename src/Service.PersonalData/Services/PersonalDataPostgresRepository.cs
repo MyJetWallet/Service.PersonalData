@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Postgres;
 using Service.PersonalData.Postgres.Models;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
-using ILogger = Serilog.ILogger;
 
 namespace Service.PersonalData.Services
 {

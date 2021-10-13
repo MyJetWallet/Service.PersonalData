@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Grpc.Models;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
 
 namespace Service.PersonalData.Grpc.Contracts
 {

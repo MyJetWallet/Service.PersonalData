@@ -1,8 +1,8 @@
 using System;
 using System.IO;
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Grpc.Contracts;
 using Service.PersonalData.Postgres.Models;
-using SimpleTrading.PersonalData.Abstractions.Documents;
 
 namespace Service.PersonalData.Mappers
 {

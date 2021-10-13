@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Grpc.Contracts;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
 
 namespace Service.PersonalData.Grpc.Models
 {
@@ -77,5 +77,8 @@ namespace Service.PersonalData.Grpc.Models
 
         [DataMember(Order = 23)]
         public DateTime CreatedAt { get; set; }
+        
+        [DataMember(Order = 24)]
+        public bool IsTechnical { get; set; }
     }
 }

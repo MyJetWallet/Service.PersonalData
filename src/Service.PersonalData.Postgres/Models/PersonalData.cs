@@ -1,5 +1,5 @@
 using System;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
+using Service.PersonalData.Domain.Models;
 
 namespace Service.PersonalData.Postgres.Models
 {
@@ -52,5 +52,8 @@ namespace Service.PersonalData.Postgres.Models
         public string BrandId { get; set; }
         
         public string PlatformType { get; set; }
+        
+        public bool IsTechnical { get; set; }
+
     }
 }

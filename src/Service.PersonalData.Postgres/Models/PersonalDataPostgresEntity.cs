@@ -1,6 +1,6 @@
 using System;
 using Newtonsoft.Json;
-using SimpleTrading.PersonalData.Abstractions.PersonalData;
+using Service.PersonalData.Domain.Models;
 
 namespace Service.PersonalData.Postgres.Models
 {
@@ -77,6 +77,10 @@ namespace Service.PersonalData.Postgres.Models
         
         [JsonProperty("platformtype")]
         public string PlatformType { get; set; }
+
+        [JsonProperty("istechnical")]
+
+        public bool IsTechnical { get; set; }
 
         public static PersonalDataPostgresEntity Create(IPersonalData src)
         {
