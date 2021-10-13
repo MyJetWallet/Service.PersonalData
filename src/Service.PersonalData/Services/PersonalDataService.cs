@@ -319,7 +319,7 @@ namespace Service.PersonalData.Services
             var entities = await _personalDataRepository.SearchByIds(request.SearchText, Program.EncodingKey);
             return new PersonalDataBatchResponseContract()
             {
-                PersonalDatas = entities.Concat(entitiesFromCache).Select(pd => pd.ToGrpcModel())
+                PersonalDatas = entities.Concat(entitiesFromCache).DistinctBy(t=>t.Id).Select(pd => pd.ToGrpcModel())
             };
 
         }
