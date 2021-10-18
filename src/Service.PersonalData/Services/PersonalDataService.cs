@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
+using MyJetWallet.Sdk.ServiceBus;
 using Newtonsoft.Json;
 using Service.AuditLog.Grpc;
 using Service.AuditLog.Grpc.Models;
@@ -23,9 +24,9 @@ namespace Service.PersonalData.Services
         private readonly ILogger<PersonalDataService> _logger;
         private readonly IAuditLogServiceGrpc _auditLogService;
         private readonly PersonalDataCache _personalDataCache;
-        private readonly IPublisher<PersonalDataUpdateMessage> _publisher;
+        private readonly IServiceBusPublisher<PersonalDataUpdateMessage> _publisher;
 
-        public PersonalDataService(PersonalDataPostgresRepository personalDataRepository, ILogger<PersonalDataService> logger, IAuditLogServiceGrpc auditLogService, PersonalDataCache personalDataCache, IPublisher<PersonalDataUpdateMessage> publisher)
+        public PersonalDataService(PersonalDataPostgresRepository personalDataRepository, ILogger<PersonalDataService> logger, IAuditLogServiceGrpc auditLogService, PersonalDataCache personalDataCache, IServiceBusPublisher<PersonalDataUpdateMessage> publisher)
         {
             _personalDataRepository = personalDataRepository;
             _logger = logger;
@@ -114,7 +115,8 @@ namespace Service.PersonalData.Services
 
                 await _auditLogService.RegisterEventAsync(log);
                 _personalDataCache.UpdateCache(updatedPd);
-                await _publisher.PublishAsync(new ()
+                
+                await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
                     TraderId = request.Id
                 });
@@ -155,7 +157,7 @@ namespace Service.PersonalData.Services
 
                 await _auditLogService.RegisterEventAsync(log);
                 _personalDataCache.UpdateCache(updatedPd);
-                await _publisher.PublishAsync(new ()
+                await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
                     TraderId = request.Id
                 });
@@ -194,7 +196,7 @@ namespace Service.PersonalData.Services
                 
                 await _auditLogService.RegisterEventAsync(log);
                 _personalDataCache.UpdateCache(updatedPd);
-                await _publisher.PublishAsync(new ()
+                await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
                     TraderId = request.Id
                 });
@@ -230,7 +232,7 @@ namespace Service.PersonalData.Services
 
             await _auditLogService.RegisterEventAsync(log);
             _personalDataCache.UpdateCache(updatedPd);
-            await _publisher.PublishAsync(new ()
+            await _publisher.PublishAsync(new PersonalDataUpdateMessage()
             {
                 TraderId = request.Id
             });
@@ -348,7 +350,7 @@ namespace Service.PersonalData.Services
 
                 await _auditLogService.RegisterEventAsync(log);
                 _personalDataCache.UpdateCache(pd);
-                await _publisher.PublishAsync(new ()
+                await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
                     TraderId = request.Id
                 });

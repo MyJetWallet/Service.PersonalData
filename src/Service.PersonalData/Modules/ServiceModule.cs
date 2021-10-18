@@ -24,7 +24,7 @@ namespace Service.PersonalData.Modules
                 .SingleInstance();
             
             builder.RegisterAuditLogClient(Program.Settings.AuditLogServiceUrl);
-            var spotServiceBusClient = builder.RegisterMyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), ApplicationEnvironment.HostName, Program.LogFactory);
+            var spotServiceBusClient = builder.RegisterMyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), Program.LogFactory);
             builder.RegisterMyServiceBusPublisher<PersonalDataUpdateMessage>(spotServiceBusClient, PersonalDataUpdateMessage.TopicName, false);
             
             
