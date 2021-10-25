@@ -328,6 +328,7 @@ namespace Service.PersonalData.Services
 
         public async ValueTask<ResultGrpcResponse> CreateRecordAsync(PersonalDataGrpcModel request)
         {
+            _logger.LogInformation("Creating personal data record for user id {userId}", request.Id);
             try
             {
                 var pd = request.ToDomainModel();
