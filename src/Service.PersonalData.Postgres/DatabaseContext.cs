@@ -3,12 +3,13 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MyJetWallet.Sdk.Postgres;
 using MyJetWallet.Sdk.Service;
 using Service.PersonalData.Postgres.Models;
 
 namespace Service.PersonalData.Postgres
 {
-public class DatabaseContext : DbContext
+public class DatabaseContext : MyDbContext
     {
         public const string Schema = "personaldata";
 
@@ -25,7 +26,6 @@ public class DatabaseContext : DbContext
         
         public DbSet<TraderDocument> TraderDocuments { get; set; }
 
-        public static ILoggerFactory LoggerFactory { get; set; }
 
         public static DatabaseContext Create(DbContextOptionsBuilder<DatabaseContext> options)
         {
@@ -35,12 +35,7 @@ public class DatabaseContext : DbContext
 
             return ctx;
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (LoggerFactory != null) optionsBuilder.UseLoggerFactory(LoggerFactory).EnableSensitiveDataLogging();
-        }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(Schema);

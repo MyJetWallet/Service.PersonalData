@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
 using MyJetWallet.Sdk.ServiceBus;
 using Newtonsoft.Json;
@@ -319,6 +317,7 @@ namespace Service.PersonalData.Services
 
             var entitiesFromCache = await _personalDataRepository.GetByIdsAsync(ids, Program.EncodingKey);
             var entities = await _personalDataRepository.SearchByIds(request.SearchText, Program.EncodingKey);
+
             return new PersonalDataBatchResponseContract()
             {
                 PersonalDatas = entities.Concat(entitiesFromCache).DistinctBy(t=>t.Id).Select(pd => pd.ToGrpcModel())
