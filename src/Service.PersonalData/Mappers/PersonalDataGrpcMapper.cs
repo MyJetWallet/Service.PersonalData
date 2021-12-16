@@ -70,16 +70,18 @@ namespace Service.PersonalData.Mappers
                 Phone = src.Phone,
                 Sex = src.Sex,
                 PostalCode = src.PostalCode,
+                CountryOfRegistration = src.CountryOfRegistration,
                 CountryOfCitizenship = src.CountryOfCitizenship,
                 CountryOfResidence = src.CountryOfResidence,
                 KYC = src.KYC,
                 Confirm = src.Confirm,
                 ConfirmPhone = src.ConfirmPhone,
                 USCitizen = src.USCitizen,
+                IpOfRegistration = src.IpOfRegistration,
                 Address = src.Address,
                 BrandId = src.BrandId,
                 PlatformType = src.PlatformType,
-                IsTechnical = src.IsTechnical
+                IsTechnical = src.IsTechnical,
             };
         }
     }
