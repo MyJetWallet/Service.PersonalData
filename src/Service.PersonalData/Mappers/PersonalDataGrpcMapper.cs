@@ -1,3 +1,4 @@
+using System;
 using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Grpc.Models;
 
@@ -82,6 +83,7 @@ namespace Service.PersonalData.Mappers
                 BrandId = src.BrandId,
                 PlatformType = src.PlatformType,
                 IsTechnical = src.IsTechnical,
+                CreatedAt = DateTime.UtcNow
             };
         }
     }
