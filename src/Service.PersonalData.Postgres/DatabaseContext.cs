@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,7 @@ public class DatabaseContext : MyDbContext
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.BrandId).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.PlatformType).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.IsTechnical).HasDefaultValue(false);
+            modelBuilder.Entity<PersonalDataPostgresEntity>().Property(e => e.CreatedAt).HasDefaultValue(DateTime.MinValue);
 
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.Id).IsUnique();
             modelBuilder.Entity<PersonalDataPostgresEntity>().HasIndex(e => e.Email).IsUnique();
