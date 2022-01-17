@@ -45,5 +45,12 @@ namespace Service.PersonalData.Grpc.Contracts
 
         [DataMember(Order = 13)]
         public bool? USCitizen { get; set; }
+        
+        [DataMember(Order = 14)]
+        public string PhoneCode { get; set; }
+        
+        [DataMember(Order = 15)]
+        public string PhoneNumber { get; set; }
+
     }
 }

@@ -93,7 +93,9 @@ namespace Service.PersonalData.Services
                     Address = request.Address,
                     UsCitizen = request.USCitizen,
                     Sex = request.Sex,
-                    BirthDay = request.DateOfBirth
+                    BirthDay = request.DateOfBirth,
+                    PhoneCode = request.PhoneCode,
+                    PhoneNumber = request.PhoneNumber
                 }, Program.EncodingKey);
 
                 var updatedPd =
