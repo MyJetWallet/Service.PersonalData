@@ -27,5 +27,9 @@ namespace Service.PersonalData.Domain.Models
         PersonalDataSexEnum? Sex { get; set; }
 
         DateTime? BirthDay { get; set; }
+        
+        string PhoneCode { get; set; }
+        
+        string PhoneNumber { get; set; }
     }
 }

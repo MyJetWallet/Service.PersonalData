@@ -281,6 +281,12 @@ namespace Service.PersonalData.Services
             
                 if (update.UsCitizen != null)
                     entity.USCitizen = update.UsCitizen;
+                
+                if (update.PhoneCode != null)
+                    entity.PhoneCode = update.PhoneCode;
+                
+                if (update.PhoneNumber != null)
+                    entity.PhoneNumber = update.PhoneNumber;
 
                 entity.Encode(initKey);
 

@@ -79,8 +79,12 @@ namespace Service.PersonalData.Postgres.Models
         public string PlatformType { get; set; }
 
         [JsonProperty("istechnical")]
-
         public bool IsTechnical { get; set; }
+
+        [JsonProperty("phonecode")]
+        public string PhoneCode { get; set; }
+        [JsonProperty("phonenubmer")]
+        public string PhoneNumber { get; set;}
 
         public static PersonalDataPostgresEntity Create(IPersonalData src)
         {
@@ -109,7 +113,10 @@ namespace Service.PersonalData.Postgres.Models
                 IsInternal = src.IsInternal,
                 EmailGroupId = src.EmailGroupId,
                 BrandId = src.BrandId,
-                PlatformType = src.PlatformType
+                PlatformType = src.PlatformType,
+                IsTechnical = src.IsTechnical,
+                PhoneCode = src.PhoneCode,
+                PhoneNumber = src.PhoneNumber,
             };
         }
 
@@ -140,7 +147,10 @@ namespace Service.PersonalData.Postgres.Models
                 IsInternal = IsInternal,
                 EmailGroupId = EmailGroupId,
                 PlatformType = PlatformType,
-                BrandId = BrandId
+                BrandId = BrandId,
+                IsTechnical = IsTechnical,
+                PhoneCode = PhoneCode,
+                PhoneNumber = PhoneNumber
             };
         }
     }

@@ -28,6 +28,8 @@ namespace Service.PersonalData.Postgres.Models
         public PersonalDataSexEnum? Sex { get; set; }
         
         public DateTime? BirthDay { get; set; }
+        public string PhoneCode { get; set; }
+        public string PhoneNumber { get; set; }
 
         public static PersonalDataPostgresUpdateEntity Create(IPersonalDataUpdate src)
         {
@@ -44,7 +46,9 @@ namespace Service.PersonalData.Postgres.Models
                 Address = src.Address,
                 UsCitizen = src.UsCitizen,
                 Sex = src.Sex,
-                BirthDay = src.BirthDay
+                BirthDay = src.BirthDay,
+                PhoneCode = src.PhoneCode,
+                PhoneNumber = src.PhoneNumber
             };
         }
     }

@@ -80,5 +80,12 @@ namespace Service.PersonalData.Grpc.Models
         
         [DataMember(Order = 24)]
         public bool IsTechnical { get; set; }
+        
+        [DataMember(Order = 25)]
+        public string PhoneCode { get; set; }
+        
+        [DataMember(Order = 26)]
+        public string PhoneNumber { get; set; }
+
     }
 }

@@ -54,6 +54,7 @@ namespace Service.PersonalData.Postgres.Models
         public string PlatformType { get; set; }
         
         public bool IsTechnical { get; set; }
-
+        public string PhoneCode { get; set;}
+        public string PhoneNumber { get; set;}
     }
 }

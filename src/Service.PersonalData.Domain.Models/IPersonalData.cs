@@ -52,6 +52,7 @@ namespace Service.PersonalData.Domain.Models
         string PlatformType { get; }
         
         bool IsTechnical { get; set; }
-
+        string PhoneCode { get; set; }
+        string PhoneNumber { get; set; }
     }
 }

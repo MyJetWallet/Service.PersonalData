@@ -13,6 +13,8 @@ namespace Service.PersonalData.Services
             entity.City = entity.City?.EncodeString(key);
             entity.Email = entity.Email?.EncodeString(key);
             entity.Phone = entity.Phone?.EncodeString(key);
+            entity.PhoneCode = entity.PhoneCode?.EncodeString(key);
+            entity.PhoneNumber = entity.PhoneNumber?.EncodeString(key);
             entity.FirstName = entity.FirstName?.EncodeString(key);
             entity.LastName = entity.LastName?.EncodeString(key);
             entity.PostalCode = entity.PostalCode?.EncodeString(key);
@@ -26,6 +28,8 @@ namespace Service.PersonalData.Services
             entity.City = entity.City?.DecodeString(key);
             entity.Email = entity.Email?.DecodeString(key);
             entity.Phone = entity.Phone?.DecodeString(key);
+            entity.PhoneCode = entity.PhoneCode?.DecodeString(key);
+            entity.PhoneNumber = entity.PhoneNumber?.DecodeString(key);
             entity.FirstName = entity.FirstName?.DecodeString(key);
             entity.LastName = entity.LastName?.DecodeString(key);
             entity.PostalCode = entity.PostalCode?.DecodeString(key);

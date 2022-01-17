@@ -33,7 +33,9 @@ namespace Service.PersonalData.Mappers
                 BrandId = src.BrandId,
                 PlatformType = src.PlatformType,
                 CreatedAt = src.CreatedAt,
-                IsTechnical = src.IsTechnical
+                IsTechnical = src.IsTechnical,
+                PhoneCode = src.PhoneCode,
+                PhoneNumber = src.PhoneNumber
             };
         }
         
@@ -83,7 +85,9 @@ namespace Service.PersonalData.Mappers
                 BrandId = src.BrandId,
                 PlatformType = src.PlatformType,
                 IsTechnical = src.IsTechnical,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                PhoneCode = src.PhoneCode,
+                PhoneNumber = src.PhoneNumber
             };
         }
     }
