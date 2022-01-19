@@ -288,6 +288,9 @@ namespace Service.PersonalData.Services
                 if (update.PhoneNumber != null)
                     entity.PhoneNumber = update.PhoneNumber;
 
+                if (update.PhoneIso != null)
+                    entity.PhoneIso = update.PhoneIso;
+                
                 entity.Encode(initKey);
 
                 ctx.PersonalDataSet.Update(entity);

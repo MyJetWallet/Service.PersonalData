@@ -85,6 +85,8 @@ namespace Service.PersonalData.Postgres.Models
         public string PhoneCode { get; set; }
         [JsonProperty("phonenubmer")]
         public string PhoneNumber { get; set;}
+        [JsonProperty("phoneiso")]
+        public string PhoneIso { get; set; }
 
         public static PersonalDataPostgresEntity Create(IPersonalData src)
         {
@@ -117,6 +119,7 @@ namespace Service.PersonalData.Postgres.Models
                 IsTechnical = src.IsTechnical,
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
+                PhoneIso = src.PhoneIso
             };
         }
 
@@ -150,7 +153,8 @@ namespace Service.PersonalData.Postgres.Models
                 BrandId = BrandId,
                 IsTechnical = IsTechnical,
                 PhoneCode = PhoneCode,
-                PhoneNumber = PhoneNumber
+                PhoneNumber = PhoneNumber,
+                PhoneIso = PhoneIso
             };
         }
     }

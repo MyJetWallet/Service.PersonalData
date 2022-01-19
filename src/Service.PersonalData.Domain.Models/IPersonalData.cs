@@ -54,5 +54,6 @@ namespace Service.PersonalData.Domain.Models
         bool IsTechnical { get; set; }
         string PhoneCode { get; set; }
         string PhoneNumber { get; set; }
+        string PhoneIso { get; set; }
     }
 }
