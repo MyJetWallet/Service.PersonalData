@@ -88,6 +88,8 @@ namespace Service.PersonalData.Postgres.Models
         [JsonProperty("phoneiso")]
         public string PhoneIso { get; set; }
 
+        [JsonProperty("phonenational")]
+        public string PhoneNational { get; set; }
         public static PersonalDataPostgresEntity Create(IPersonalData src)
         {
             return new PersonalDataPostgresEntity
@@ -119,7 +121,8 @@ namespace Service.PersonalData.Postgres.Models
                 IsTechnical = src.IsTechnical,
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
-                PhoneIso = src.PhoneIso
+                PhoneIso = src.PhoneIso,
+                PhoneNational = src.PhoneNational
             };
         }
 
@@ -154,7 +157,8 @@ namespace Service.PersonalData.Postgres.Models
                 IsTechnical = IsTechnical,
                 PhoneCode = PhoneCode,
                 PhoneNumber = PhoneNumber,
-                PhoneIso = PhoneIso
+                PhoneIso = PhoneIso,
+                PhoneNational = PhoneNational
             };
         }
     }

@@ -54,6 +54,8 @@ namespace Service.PersonalData.Grpc.Contracts
         
         [DataMember(Order = 16)]
         public string PhoneIso { get; set; }
+        [DataMember(Order = 17)]
+        public string PhoneNational { get; set; }
 
     }
 }

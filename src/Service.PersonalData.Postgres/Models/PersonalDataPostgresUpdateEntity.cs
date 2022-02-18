@@ -31,6 +31,7 @@ namespace Service.PersonalData.Postgres.Models
         public string PhoneCode { get; set; }
         public string PhoneNumber { get; set; }
         public string PhoneIso { get; set; }
+        public string PhoneNational { get; set; }
 
         public static PersonalDataPostgresUpdateEntity Create(IPersonalDataUpdate src)
         {
@@ -50,7 +51,8 @@ namespace Service.PersonalData.Postgres.Models
                 BirthDay = src.BirthDay,
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
-                PhoneIso = src.PhoneIso
+                PhoneIso = src.PhoneIso,
+                PhoneNational = src.PhoneNational
             };
         }
     }

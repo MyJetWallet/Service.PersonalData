@@ -57,5 +57,7 @@ namespace Service.PersonalData.Postgres.Models
         public string PhoneCode { get; set;}
         public string PhoneNumber { get; set;}
         public string PhoneIso { get; set; }
+        public string PhoneNational { get; set; }
+
     }
 }

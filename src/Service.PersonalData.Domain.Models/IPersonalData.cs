@@ -55,5 +55,6 @@ namespace Service.PersonalData.Domain.Models
         string PhoneCode { get; set; }
         string PhoneNumber { get; set; }
         string PhoneIso { get; set; }
+        string PhoneNational { get; set; }
     }
 }
