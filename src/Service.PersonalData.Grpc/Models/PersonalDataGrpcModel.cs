@@ -89,6 +89,9 @@ namespace Service.PersonalData.Grpc.Models
         
         [DataMember(Order = 27)]
         public string PhoneIso { get; set; }
+        
+        [DataMember(Order = 28)]
+        public string PhoneNational { get; set; }
 
     }
 }

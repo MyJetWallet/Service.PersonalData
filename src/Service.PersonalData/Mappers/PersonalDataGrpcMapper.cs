@@ -36,7 +36,8 @@ namespace Service.PersonalData.Mappers
                 IsTechnical = src.IsTechnical,
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
-                PhoneIso = src.PhoneIso
+                PhoneIso = src.PhoneIso,
+                PhoneNational = src.PhoneNational
             };
         }
         
@@ -89,7 +90,8 @@ namespace Service.PersonalData.Mappers
                 CreatedAt = DateTime.UtcNow,
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
-                PhoneIso = src.PhoneIso
+                PhoneIso = src.PhoneIso,
+                PhoneNational = src.PhoneNational
             };
         }
     }
