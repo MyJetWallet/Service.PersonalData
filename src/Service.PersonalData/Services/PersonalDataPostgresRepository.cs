@@ -344,5 +344,28 @@ namespace Service.PersonalData.Services
             
             return decoded;
         }
+
+        public async Task<int> GetTotalByDateAsync(DateTime from, DateTime to)
+        {
+            try
+            {
+                await using var ctx = DatabaseContext.Create(_dbContextOptionsBuilder);
+                var count = ctx.PersonalDataSet
+                    .Where(t => (t.CreatedAt >= from && t.CreatedAt <= to))
+                    .Count();
+
+                return count;
+            }
+            catch (NpgsqlException e)
+            {
+                _logger.LogError(e, e.Message);
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                throw;
+            }
+        }
     }
 }

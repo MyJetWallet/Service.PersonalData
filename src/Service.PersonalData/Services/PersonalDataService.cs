@@ -366,5 +366,14 @@ namespace Service.PersonalData.Services
                 return new ResultGrpcResponse {Ok = false};
             }
         }
+
+        public async ValueTask<GetTotalResponse> GetTotalByDateAsync(GetTotalByDateRequest request)
+        {
+            return new GetTotalResponse()
+            {
+                TotalPersonalDatas = await _personalDataRepository
+                    .GetTotalByDateAsync(request.From, request.To)
+            };
+        }
     }
 }

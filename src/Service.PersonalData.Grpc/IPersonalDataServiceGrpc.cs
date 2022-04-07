@@ -47,5 +47,8 @@ namespace Service.PersonalData.Grpc
         
         [OperationContract]
         ValueTask<ResultGrpcResponse> CreateRecordAsync(PersonalDataGrpcModel personalData);
+
+        [OperationContract]
+        ValueTask<GetTotalResponse> GetTotalByDateAsync(GetTotalByDateRequest request);
     }
 }
