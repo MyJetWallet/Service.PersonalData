@@ -368,16 +368,16 @@ namespace Service.PersonalData.Services
             }
         }
 
-        public async Task DeactivateClientAsync(string clientId, byte[] encodingKey)
+        public async Task<IPersonalData> DeactivateClientAsync(string clientId, byte[] encodingKey)
         {
             await using var ctx = DatabaseContext.Create(_dbContextOptionsBuilder);
             var entity = await GetEntityAsync(clientId, encodingKey);
             
             if (entity == null)
-                return;
+                return null;
             
             if (entity.IsDeactivated)
-                return;
+                return null;
 
             entity.EmailHash = string.Empty;
             entity.Email = $"{entity.Email}_deactivated";
@@ -391,6 +391,8 @@ namespace Service.PersonalData.Services
             
             ctx.PersonalDataSet.Update(entity);
             await ctx.SaveChangesAsync();
+
+            return entity;
         }
     }
 }

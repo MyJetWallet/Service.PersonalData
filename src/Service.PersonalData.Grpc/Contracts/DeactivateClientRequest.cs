@@ -6,4 +6,7 @@ namespace Service.PersonalData.Grpc.Contracts;
 public class DeactivateClientRequest
 {
     [DataMember(Order = 1)] public string Id { get; set; }
+    
+    [DataMember(Order = 2)]
+    public AuditLogGrpcContract AuditLog { get; set; }
 }
