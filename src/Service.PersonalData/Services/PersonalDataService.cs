@@ -360,5 +360,14 @@ namespace Service.PersonalData.Services
                     .GetTotalByDateAsync(request.From, request.To)
             };
         }
+
+        public async ValueTask<ResultGrpcResponse> DeactivateClientAsync(DeactivateClientRequest request)
+        {
+            await _personalDataRepository.DeactivateClientAsync(request.Id, Program.EncodingKey);
+            return new ResultGrpcResponse()
+            {
+                Ok = true
+            };
+        }
     }
 }

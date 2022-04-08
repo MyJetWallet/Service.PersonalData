@@ -47,5 +47,8 @@ namespace Service.PersonalData.Grpc
 
         [OperationContract]
         ValueTask<GetTotalResponse> GetTotalByDateAsync(GetTotalByDateRequest request);
+        
+        [OperationContract]
+        ValueTask<ResultGrpcResponse> DeactivateClientAsync(DeactivateClientRequest request);
     }
 }

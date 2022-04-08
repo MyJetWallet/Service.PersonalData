@@ -367,5 +367,30 @@ namespace Service.PersonalData.Services
                 throw;
             }
         }
+
+        public async Task DeactivateClientAsync(string clientId, byte[] encodingKey)
+        {
+            await using var ctx = DatabaseContext.Create(_dbContextOptionsBuilder);
+            var entity = await GetEntityAsync(clientId, encodingKey);
+            
+            if (entity == null)
+                return;
+            
+            if (entity.IsDeactivated)
+                return;
+
+            entity.EmailHash = string.Empty;
+            entity.Email = $"{entity.Email}_deactivated";
+            entity.DeactivatedPhone = entity.Phone;
+            entity.IsDeactivated = true;
+            entity.Phone = String.Empty;
+            entity.PhoneCode = String.Empty;
+            entity.PhoneIso = String.Empty;
+            entity.PhoneNational = String.Empty;
+            entity.PhoneNumber = String.Empty;
+            
+            ctx.PersonalDataSet.Update(entity);
+            await ctx.SaveChangesAsync();
+        }
     }
 }

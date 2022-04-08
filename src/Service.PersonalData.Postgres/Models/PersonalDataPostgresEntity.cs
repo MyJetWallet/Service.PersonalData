@@ -90,6 +90,13 @@ namespace Service.PersonalData.Postgres.Models
 
         [JsonProperty("phonenational")]
         public string PhoneNational { get; set; }
+        
+        [JsonProperty("deactivated")]
+        public bool IsDeactivated { get; set; }
+        
+        [JsonProperty("deactivatedPhone")]
+        public string DeactivatedPhone { get; set; }
+        
         public static PersonalDataPostgresEntity Create(IPersonalData src)
         {
             return new PersonalDataPostgresEntity
