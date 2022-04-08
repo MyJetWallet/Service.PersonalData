@@ -286,31 +286,16 @@ namespace Service.PersonalData.Services
             {
                 TotalPersonalDatas = await _personalDataRepository.GetTotalAsync()
             };
-
-        public async ValueTask<PersonalDataGrpcResponseContract> GetByEmail(GetByEmailRequest request)
-        {
-            var response = new PersonalDataGrpcResponseContract();
-            var id = _personalDataCache.GetUserIdByEmail(request.Email);
-            if (!string.IsNullOrEmpty(id))
-            {
-                var entity =
-                    await _personalDataRepository.GetByIdAsync(id, Program.EncodingKey);
-                if (entity != null)
-                    response.PersonalData = entity.ToGrpcModel();
-            }
-            return response;
-        }
         
-        public async ValueTask<PersonalDataGrpcResponseContract> GetByPhone(GetByPhoneRequest request)
+        public async ValueTask<PersonalDataBatchResponseContract> GetByPhoneList(GetByPhoneRequest request)
         {
-            var response = new PersonalDataGrpcResponseContract();
-            var id = _personalDataCache.GetUserIdByPhone(request.Phone);
-            if (!string.IsNullOrEmpty(id))
+            var response = new PersonalDataBatchResponseContract();
+            var ids = _personalDataCache.GetUserIdsByPhone(request.Phone);
+            if (ids.Any())
             {
-                var entity =
-                    await _personalDataRepository.GetByIdAsync(id, Program.EncodingKey);
-                if (entity != null)
-                    response.PersonalData = entity.ToGrpcModel();
+                var personalDatas = await _personalDataRepository.GetByIdsAsync(ids, Program.EncodingKey);
+                if (personalDatas != null) 
+                    response.PersonalDatas = personalDatas.Select(pd => pd.ToGrpcModel());
             }
             return response;
         }

@@ -68,20 +68,9 @@ namespace Service.PersonalData.Services
             _logger.LogInformation("Initial PD cache population finished");
         }
 
-        public string GetUserIdByPhone(string phone)
+        public List<string> GetUserIdsByPhone(string phone)
         {
-            if (_userIDsByPhone.TryGetValue(phone, out var ids))
-            {
-                if (ids.Count() > 1)
-                {
-                    _logger.LogError($"Cannot get PersonalData by phone {phone}, because exist {ids.Count()} records");
-                    throw new Exception($"Cannot get PersonalData by phone, because exist {ids.Count()} records");
-                }
-
-                return ids.FirstOrDefault();
-            }
-            
-            return string.Empty;
+            return _userIDsByPhone.TryGetValue(phone, out var ids) ? ids : new List<string>();
         }
         
         public string GetUserIdByEmail(string email)

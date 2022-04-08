@@ -22,9 +22,6 @@ namespace Service.PersonalData.Grpc
         ValueTask<PersonalDataBatchResponseContract> GetByIdsAsync(GetByIdsRequest request);
 
         [OperationContract]
-        ValueTask<PersonalDataGrpcResponseContract> GetByEmail(GetByEmailRequest request);
-
-        [OperationContract]
         ValueTask ConfirmAsync(ConfirmGrpcModel confirmData);
         
         [OperationContract]
@@ -40,7 +37,7 @@ namespace Service.PersonalData.Grpc
         ValueTask<GetTotalResponse> GetTotalAsync();
         
         [OperationContract]
-        ValueTask<PersonalDataGrpcResponseContract> GetByPhone(GetByPhoneRequest request);
+        ValueTask<PersonalDataBatchResponseContract> GetByPhoneList(GetByPhoneRequest request);
         
         [OperationContract]
         ValueTask<PersonalDataBatchResponseContract> SearchAsync(SearchRequest request);
