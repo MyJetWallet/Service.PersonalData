@@ -90,7 +90,8 @@ namespace Service.PersonalData.Services
             try
             {
                 await using var ctx = DatabaseContext.Create(_dbContextOptionsBuilder);
-                var results = ctx.PersonalDataSet.OrderBy(t => t.Id).Take(limit).Skip(offset).ToList();
+                var results = ctx.PersonalDataSet.OrderBy(t => t.Id)
+                    .Skip(offset).Take(limit).ToList();
                 
                 var decodedResults = new List<PersonalDataPostgresEntity>();
 
