@@ -129,7 +129,9 @@ namespace Service.PersonalData.Postgres.Models
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
                 PhoneIso = src.PhoneIso,
-                PhoneNational = src.PhoneNational
+                PhoneNational = src.PhoneNational,
+                IsDeactivated = false,
+                DeactivatedPhone = String.Empty
             };
         }
 

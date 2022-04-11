@@ -92,6 +92,12 @@ namespace Service.PersonalData.Grpc.Models
         
         [DataMember(Order = 28)]
         public string PhoneNational { get; set; }
+        
+        [DataMember(Order = 29)]
+        public bool IsDeactivated { get; set; }
+        
+        [DataMember(Order = 30)]
+        public string DeactivatedPhone { get; set; }
 
     }
 }

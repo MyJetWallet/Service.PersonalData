@@ -37,7 +37,9 @@ namespace Service.PersonalData.Mappers
                 PhoneCode = src.PhoneCode,
                 PhoneNumber = src.PhoneNumber,
                 PhoneIso = src.PhoneIso,
-                PhoneNational = src.PhoneNational
+                PhoneNational = src.PhoneNational,
+                IsDeactivated = src.IsDeactivated,
+                DeactivatedPhone = src.DeactivatedPhone
             };
         }
         

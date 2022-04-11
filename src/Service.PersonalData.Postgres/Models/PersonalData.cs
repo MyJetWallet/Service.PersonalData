@@ -58,6 +58,8 @@ namespace Service.PersonalData.Postgres.Models
         public string PhoneNumber { get; set;}
         public string PhoneIso { get; set; }
         public string PhoneNational { get; set; }
+        public bool IsDeactivated { get; set; }
+        public string DeactivatedPhone { get; set; }
 
     }
 }

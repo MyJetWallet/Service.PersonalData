@@ -56,5 +56,7 @@ namespace Service.PersonalData.Domain.Models
         string PhoneNumber { get; set; }
         string PhoneIso { get; set; }
         string PhoneNational { get; set; }
+        public bool IsDeactivated { get; set; }
+        public string DeactivatedPhone { get; set; }
     }
 }
