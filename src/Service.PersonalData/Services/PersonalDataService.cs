@@ -363,6 +363,7 @@ namespace Service.PersonalData.Services
 
         public async ValueTask<ResultGrpcResponse> DeactivateClientAsync(DeactivateClientRequest request)
         {
+            _logger.LogWarning("Deactivate client: {clientId}", request.Id);
             var log = new AuditLogGrpcModel
             {
                 TraderId = request.Id,
@@ -374,6 +375,8 @@ namespace Service.PersonalData.Services
                 UpdatedData = String.Empty,
                 After = String.Empty
             };
+
+            await _personalDataRepository.DeactivateClientAsync(request.Id, Program.EncodingKey);
 
             await _auditLogService.RegisterEventAsync(log);
             await _publisher.PublishAsync(new PersonalDataUpdateMessage()
