@@ -389,6 +389,8 @@ namespace Service.PersonalData.Services
             entity.PhoneNational = String.Empty;
             entity.PhoneNumber = String.Empty;
             
+            entity.Encode(encodingKey);
+            
             ctx.PersonalDataSet.Update(entity);
             await ctx.SaveChangesAsync();
 
