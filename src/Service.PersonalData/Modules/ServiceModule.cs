@@ -8,6 +8,7 @@ using MyAzureBlob;
 using MyJetWallet.Sdk.Service;
 using MyJetWallet.Sdk.ServiceBus;
 using Service.AuditLog.Client;
+using Service.ClientAuditLog.Domain.Models;
 using Service.PersonalData.Domain.Models.ServiceBus;
 using Service.PersonalData.Services;
 
@@ -26,7 +27,8 @@ namespace Service.PersonalData.Modules
             builder.RegisterAuditLogClient(Program.Settings.AuditLogServiceUrl);
             var spotServiceBusClient = builder.RegisterMyServiceBusTcpClient(Program.ReloadedSettings(e => e.SpotServiceBusHostPort), Program.LogFactory);
             builder.RegisterMyServiceBusPublisher<PersonalDataUpdateMessage>(spotServiceBusClient, PersonalDataUpdateMessage.TopicName, false);
-            
+            builder.RegisterMyServiceBusPublisher<ClientAuditLogModel>(spotServiceBusClient, ClientAuditLogModel.TopicName, false);
+
             
             builder.RegisterType<PersonalDataCache>().AsSelf().SingleInstance();
             builder.RegisterType<PersonalDataPostgresRepository>().AsSelf().SingleInstance();

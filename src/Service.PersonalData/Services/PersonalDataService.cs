@@ -2,11 +2,15 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
+using MyJetWallet.Sdk.Service;
 using MyJetWallet.Sdk.ServiceBus;
+using MyServiceBus.Abstractions;
 using Newtonsoft.Json;
 using Service.AuditLog.Grpc;
 using Service.AuditLog.Grpc.Models;
+using Service.ClientAuditLog.Domain.Models;
 using Service.PersonalData.Domain.Models.ServiceBus;
 using Service.PersonalData.Grpc;
 using Service.PersonalData.Grpc.Contracts;
@@ -23,14 +27,16 @@ namespace Service.PersonalData.Services
         private readonly IAuditLogServiceGrpc _auditLogService;
         private readonly PersonalDataCache _personalDataCache;
         private readonly IServiceBusPublisher<PersonalDataUpdateMessage> _publisher;
+        private readonly IServiceBusPublisher<ClientAuditLogModel> _auditLogPublisher;
 
-        public PersonalDataService(PersonalDataPostgresRepository personalDataRepository, ILogger<PersonalDataService> logger, IAuditLogServiceGrpc auditLogService, PersonalDataCache personalDataCache, IServiceBusPublisher<PersonalDataUpdateMessage> publisher)
+        public PersonalDataService(PersonalDataPostgresRepository personalDataRepository, ILogger<PersonalDataService> logger, IAuditLogServiceGrpc auditLogService, PersonalDataCache personalDataCache, IServiceBusPublisher<PersonalDataUpdateMessage> publisher, IServiceBusPublisher<ClientAuditLogModel> auditLogPublisher)
         {
             _personalDataRepository = personalDataRepository;
             _logger = logger;
             _auditLogService = auditLogService;
             _personalDataCache = personalDataCache;
             _publisher = publisher;
+            _auditLogPublisher = auditLogPublisher;
         }
 
         private static string ToJson(object data)
@@ -63,6 +69,17 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
+
+                await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+                {
+                    Module = "PersonalData",
+                    EventId = request.AuditLog.ProcessId,
+                    Data = request.AuditLog.ToJson(),
+                    ClientId = request.Id,
+                    UnixDateTime = DateTime.UtcNow.UnixTime(),
+                    Message = "Personal data registration"
+                });
+                
                 _personalDataCache.UpdateCache(pd);
                 return new ResultGrpcResponse {Ok = true};
             }
@@ -116,6 +133,15 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
+                await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+                {
+                    Module = "PersonalData",
+                    EventId = request.AuditLog.ProcessId,
+                    Data = request.AuditLog.ToJson(),
+                    ClientId = request.Id,
+                    UnixDateTime = DateTime.UtcNow.UnixTime(),
+                    Message = "Personal data update"
+                });
                 _personalDataCache.UpdateCache(updatedPd);
                 
                 await _publisher.PublishAsync(new PersonalDataUpdateMessage()
@@ -158,6 +184,15 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
+                await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+                {
+                    Module = "PersonalData",
+                    EventId = request.AuditLog.ProcessId,
+                    Data = request.AuditLog.ToJson(),
+                    ClientId = request.Id,
+                    UnixDateTime = DateTime.UtcNow.UnixTime(),
+                    Message = "Personal data email confirm"
+                });
                 _personalDataCache.UpdateCache(updatedPd);
                 await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
@@ -197,6 +232,15 @@ namespace Service.PersonalData.Services
                 };
                 
                 await _auditLogService.RegisterEventAsync(log);
+                await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+                {
+                    Module = "PersonalData",
+                    EventId = request.AuditLog.ProcessId,
+                    Data = request.AuditLog.ToJson(),
+                    ClientId = request.Id,
+                    UnixDateTime = DateTime.UtcNow.UnixTime(),
+                    Message = "Personal data phone confirm"
+                });
                 _personalDataCache.UpdateCache(updatedPd);
                 await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
@@ -233,6 +277,15 @@ namespace Service.PersonalData.Services
             };
 
             await _auditLogService.RegisterEventAsync(log);
+            await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+            {
+                Module = "PersonalData",
+                EventId = request.AuditLog.ProcessId,
+                Data = request.AuditLog.ToJson(),
+                ClientId = request.Id,
+                UnixDateTime = DateTime.UtcNow.UnixTime(),
+                Message = "Personal data kyc update"
+            });
             _personalDataCache.UpdateCache(updatedPd);
             await _publisher.PublishAsync(new PersonalDataUpdateMessage()
             {
@@ -309,7 +362,7 @@ namespace Service.PersonalData.Services
 
             return new PersonalDataBatchResponseContract()
             {
-                PersonalDatas = entities.Concat(entitiesFromCache).DistinctBy(t=>t.Id).Select(pd => pd.ToGrpcModel())
+                PersonalDatas = Enumerable.DistinctBy(entities.Concat(entitiesFromCache), t=>t.Id).Select(pd => pd.ToGrpcModel())
             };
 
         }
@@ -338,6 +391,15 @@ namespace Service.PersonalData.Services
                 };
 
                 await _auditLogService.RegisterEventAsync(log);
+                await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+                {
+                    Module = "PersonalData",
+                    EventId = request.AuditLog.ProcessId,
+                    Data = request.AuditLog.ToJson(),
+                    ClientId = request.Id,
+                    UnixDateTime = DateTime.UtcNow.UnixTime(),
+                    Message = "Personal data record creation"
+                });
                 _personalDataCache.UpdateCache(pd);
                 await _publisher.PublishAsync(new PersonalDataUpdateMessage()
                 {
@@ -379,6 +441,15 @@ namespace Service.PersonalData.Services
             await _personalDataRepository.DeactivateClientAsync(request.Id, Program.EncodingKey);
 
             await _auditLogService.RegisterEventAsync(log);
+            await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
+            {
+                Module = "PersonalData",
+                EventId = request.AuditLog?.ProcessId,
+                Data = request.AuditLog?.ToJson(),
+                ClientId = request.Id,
+                UnixDateTime = DateTime.UtcNow.UnixTime(),
+                Message = "Personal data client deactivation"
+            });
             await _publisher.PublishAsync(new PersonalDataUpdateMessage()
             {
                 TraderId = request.Id
