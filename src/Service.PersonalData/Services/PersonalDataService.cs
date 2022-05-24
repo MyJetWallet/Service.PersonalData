@@ -94,6 +94,8 @@ namespace Service.PersonalData.Services
         {
             try
             {
+                string updatedFields = string.Empty;
+
                 var pd = await _personalDataRepository.GetByIdAsync(request.Id,
                     Program.EncodingKey);
 
@@ -117,6 +119,52 @@ namespace Service.PersonalData.Services
                     PhoneNational = request.PhoneNational
                 }, Program.EncodingKey);
 
+
+                if (request.FirstName != null)
+                    updatedFields += "FirstName, ";
+            
+                if (request.LastName != null)
+                    updatedFields += "LastName, ";
+            
+                if (request.City != null)
+                    updatedFields += "City, ";
+
+                if (request.Phone != null)
+                    updatedFields += "Phone, ";
+
+                if (request.PostalCode != null)
+                    updatedFields += "PostalCode, ";
+
+                if (request.CountryOfCitizenship != null)
+                    updatedFields += "CountryOfCitizenship, ";
+
+                if (request.CountryOfResidence != null)
+                    updatedFields += "CountryOfResidence, ";
+
+                if (request.Sex != null)
+                    updatedFields += "Sex, ";
+            
+                if (request.DateOfBirth != null)
+                    updatedFields += "DateOfBirth, ";
+
+                if (request.Address != null)
+                    updatedFields += "Address, ";
+            
+                if (request.USCitizen != null)
+                    updatedFields += "USCitizen, ";
+                
+                if (request.PhoneCode != null)
+                    updatedFields += "PhoneCode, ";
+                
+                if (request.PhoneNumber != null)
+                    updatedFields += "PhoneNumber, ";
+
+                if (request.PhoneIso != null)
+                    updatedFields += "PhoneIso, ";
+                
+                if (request.PhoneNational != null)
+                    updatedFields += "PhoneNational, ";
+
                 var updatedPd =
                     await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
                 
@@ -137,7 +185,11 @@ namespace Service.PersonalData.Services
                 {
                     Module = "PersonalData",
                     EventId = request.AuditLog.ProcessId,
-                    Data = request.AuditLog.ToJson(),
+                    Data = new
+                    {
+                        AuditLog = request.AuditLog.ToJson(),
+                        UpdatedFields = updatedFields,
+                    }.ToJson(),
                     ClientId = request.Id,
                     UnixDateTime = DateTime.UtcNow.UnixTime(),
                     Message = "Personal data update"
