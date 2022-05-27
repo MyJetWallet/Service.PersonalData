@@ -187,7 +187,7 @@ namespace Service.PersonalData.Services
                     EventId = request.AuditLog.ProcessId,
                     Data = new
                     {
-                        AuditLog = request.AuditLog.ToJson(),
+                        AuditLog = request.AuditLog,
                         UpdatedFields = updatedFields,
                     }.ToJson(),
                     ClientId = request.Id,
