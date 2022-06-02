@@ -31,5 +31,8 @@ namespace Service.PersonalData.Settings
 
         [YamlProperty("PersonalData.SpotServiceBusHostPort")]
         public string SpotServiceBusHostPort { get; set; }
+
+        [YamlProperty("PersonalData.MyNoSqlWriterUrl")]
+        public string MyNoSqlWriterUrl { get; set; }
     }
 }

@@ -5,10 +5,12 @@ using Autofac.Core;
 using Autofac.Core.Registration;
 using Microsoft.WindowsAzure.Storage;
 using MyAzureBlob;
+using MyJetWallet.Sdk.NoSql;
 using MyJetWallet.Sdk.Service;
 using MyJetWallet.Sdk.ServiceBus;
 using Service.AuditLog.Client;
 using Service.ClientAuditLog.Domain.Models;
+using Service.PersonalData.Domain.Models.NoSql;
 using Service.PersonalData.Domain.Models.ServiceBus;
 using Service.PersonalData.Services;
 
@@ -33,6 +35,10 @@ namespace Service.PersonalData.Modules
             builder.RegisterType<PersonalDataCache>().AsSelf().SingleInstance();
             builder.RegisterType<PersonalDataPostgresRepository>().AsSelf().SingleInstance();
             builder.RegisterType<TraderDocumentsPostgresRepository>().AsSelf().SingleInstance();
+
+            builder.RegisterMyNoSqlWriter<BillingDetailsNoSql>(
+               Program.ReloadedSettings(e => e.MyNoSqlWriterUrl),
+               BillingDetailsNoSql.TableName);
         }
     }
 }

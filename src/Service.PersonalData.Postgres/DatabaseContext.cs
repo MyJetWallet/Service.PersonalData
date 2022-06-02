@@ -15,6 +15,7 @@ public class DatabaseContext : MyDbContext
         public const string Schema = "personaldata";
 
         private const string PersonalDataTableName = "personaldata";
+        private const string BillingDetailsTableName = "billing_details";
         private const string DocumentsTableName = "traderdocuments";
 
         private Activity _activity;
@@ -24,7 +25,9 @@ public class DatabaseContext : MyDbContext
         }
 
         public DbSet<PersonalDataPostgresEntity> PersonalDataSet { get; set; }
-        
+
+        public DbSet<BillingDetailsEntity> BillingDetails { get; set; }
+
         public DbSet<TraderDocument> TraderDocuments { get; set; }
 
 
@@ -43,6 +46,7 @@ public class DatabaseContext : MyDbContext
 
             SetPersonalDataEntry(modelBuilder);
             SetDocumentsEntry(modelBuilder);
+            SetBillingDetailsEntry(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -95,27 +99,13 @@ public class DatabaseContext : MyDbContext
             modelBuilder.Entity<TraderDocument>().Property(e => e.Mime).IsRequired().HasMaxLength(512);
             modelBuilder.Entity<TraderDocument>().Property(e => e.FileName).IsRequired(false).HasMaxLength(512);
             modelBuilder.Entity<TraderDocument>().Property(e => e.IsDeleted);
-            
             modelBuilder.Entity<TraderDocument>().HasIndex(e => e.Id).IsUnique();
-
-
         }
-        
-        // public async Task<int> UpsertAsync(PersonalDataPostgresEntity entity)
-        // {
-        //     var result = await PersonalDataSet.Upsert(entity).On(e => e.Id).NoUpdate().RunAsync();
-        //     return result;
-        // }
-        //
-        // public async Task UpdateAsync(TransferEntity entity)
-        // {
-        //     await UpdateAsync(new List<TransferEntity>{entity});
-        // }
-        //
-        // public async Task UpdateAsync(IEnumerable<TransferEntity> entities)
-        // {
-        //     Transfers.UpdateRange(entities);
-        //     await SaveChangesAsync();
-        // }
+
+        private void SetBillingDetailsEntry(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BillingDetailsEntity>().ToTable(BillingDetailsTableName);
+            modelBuilder.Entity<BillingDetailsEntity>().HasKey(e => e.ClientId);
+        }
     }
 }

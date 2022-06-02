@@ -58,7 +58,8 @@ namespace Service.PersonalData
             {
                 endpoints.MapGrpcSchema<PersonalDataService, IPersonalDataServiceGrpc>();
                 endpoints.MapGrpcSchema<DocumentsServiceGrpc, IDocumentsServiceGrpc>();
-
+                endpoints.MapGrpcSchema<BillingDetailsServiceGrpc, IBillingDetailsServiceGrpc>();
+                
                 endpoints.MapGrpcSchemaRegistry();
 
                 endpoints.MapGet("/", async context =>
