@@ -42,8 +42,16 @@ namespace Service.PersonalData.Client
 
             var res = await _billingDetailsServiceGrpc.GetAsync(request);
             {
-                var details = detailsEncrypted.BillingDetails
-                    .GetUnEncrypted(System.Text.Encoding.UTF8.GetBytes(request.Secret));
+                var details = res.BillingDetails
+                    ?.GetUnEncrypted(System.Text.Encoding.UTF8.GetBytes(request.Secret));
+
+                if (details == null)
+                {
+                    return new GetBillingDetailsGrpcResponse
+                    {
+                        BillingDetails = null
+                    };
+                }
 
                 return new GetBillingDetailsGrpcResponse
                 {
