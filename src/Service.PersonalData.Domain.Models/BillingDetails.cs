@@ -65,6 +65,5 @@ namespace Service.PersonalData.Domain.Models
             get;
             set;
         }
-
     }
 }

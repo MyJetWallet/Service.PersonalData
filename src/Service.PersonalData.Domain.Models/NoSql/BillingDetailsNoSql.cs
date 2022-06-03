@@ -25,10 +25,5 @@ namespace Service.PersonalData.Domain.Models.NoSql
                 BillingDetails = billingDetails,
             };
         }
-
-        public BillingDetails GetUnEncrypted()
-        {
-
-        }
     }
 }

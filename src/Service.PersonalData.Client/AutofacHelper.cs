@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using MyJetWallet.Sdk.ServiceBus;
+using MyNoSqlServer.Abstractions;
 using MyServiceBus.Abstractions;
 using MyServiceBus.TcpClient;
+using Service.PersonalData.Domain.Models.NoSql;
 using Service.PersonalData.Domain.Models.ServiceBus;
 using Service.PersonalData.Grpc;
 
@@ -29,6 +31,17 @@ namespace Service.PersonalData.Client
         {
             builder.RegisterMyServiceBusSubscriberBatch<PersonalDataUpdateMessage>(serviceBusClient, PersonalDataUpdateMessage.TopicName, queue,
                 TopicQueueType.Permanent);
-        }    
+        }
+
+        public static void RegisterBillingDetailsClient(this ContainerBuilder builder, string grpcServiceUrl,
+            IMyNoSqlServerDataReader<BillingDetailsNoSql> reader)
+        {
+            var factory = new PersonalDataClientFactory(grpcServiceUrl);
+
+            var client = factory.GetBillingDetailsServiceGrpc();
+            var cacheDecorator = new BillingDeailsServiceDecorator(client, reader);
+
+            builder.RegisterInstance(cacheDecorator).As<IBillingDetailsServiceGrpc>().SingleInstance();
+        }
     }
 }

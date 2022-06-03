@@ -9,10 +9,10 @@ namespace Service.PersonalData.Grpc
     public interface IBillingDetailsServiceGrpc
     {
         [OperationContract]
-        ValueTask<ResultGrpcResponse> SetAsync(SetBillingDetailsGrpcModel personalData);
+        ValueTask<ResultGrpcResponse> SetAsync(SetBillingDetailsGrpcModel request);
 
         [OperationContract]
-        ValueTask<GetBillingDetailsGrpcResponse> GetAsync(GetBillingDetailsGrpcModel personalData);
+        ValueTask<GetBillingDetailsGrpcResponse> GetAsync(GetBillingDetailsGrpcModel request);
 
     }
 }

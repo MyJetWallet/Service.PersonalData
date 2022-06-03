@@ -12,6 +12,8 @@ namespace Service.PersonalData.Client
         }
 
         public IPersonalDataServiceGrpc GetPersonalDataService() => CreateGrpcService<IPersonalDataServiceGrpc>();
+
+        public IBillingDetailsServiceGrpc GetBillingDetailsServiceGrpc() => CreateGrpcService<IBillingDetailsServiceGrpc>();
         public IDocumentsServiceGrpc GetDocumentsService() => CreateGrpcService<IDocumentsServiceGrpc>();
 
     }

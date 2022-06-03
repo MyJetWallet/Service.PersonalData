@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
-using System.Text;
+using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Postgres.Models;
-using SimpleTrading.Common.Helpers;
 using Helpers = SimpleTrading.Common.Helpers;
 
 namespace Service.PersonalData.Services
@@ -10,48 +9,32 @@ namespace Service.PersonalData.Services
     {
         public static void Encode(this PersonalDataPostgresEntity entity, byte[] key)
         {
-            entity.City = entity.City?.EncodeString(key);
-            entity.Email = entity.Email?.EncodeString(key);
-            entity.Phone = entity.Phone?.EncodeString(key);
-            entity.PhoneCode = entity.PhoneCode?.EncodeString(key);
-            entity.PhoneNumber = entity.PhoneNumber?.EncodeString(key);
-            entity.FirstName = entity.FirstName?.EncodeString(key);
-            entity.LastName = entity.LastName?.EncodeString(key);
-            entity.PostalCode = entity.PostalCode?.EncodeString(key);
-            entity.CountryOfCitizenship = entity.CountryOfCitizenship?.EncodeString(key);
-            entity.CountryOfResidence = entity.CountryOfResidence?.EncodeString(key);
-            entity.Address = entity.Address?.EncodeString(key);
+            entity.City = entity.City?.EncryptString(key);
+            entity.Email = entity.Email?.EncryptString(key);
+            entity.Phone = entity.Phone?.EncryptString(key);
+            entity.PhoneCode = entity.PhoneCode?.EncryptString(key);
+            entity.PhoneNumber = entity.PhoneNumber?.EncryptString(key);
+            entity.FirstName = entity.FirstName?.EncryptString(key);
+            entity.LastName = entity.LastName?.EncryptString(key);
+            entity.PostalCode = entity.PostalCode?.EncryptString(key);
+            entity.CountryOfCitizenship = entity.CountryOfCitizenship?.EncryptString(key);
+            entity.CountryOfResidence = entity.CountryOfResidence?.EncryptString(key);
+            entity.Address = entity.Address?.EncryptString(key);
         }
 
         public static void Decode(this PersonalDataPostgresEntity entity, byte[] key)
         {
-            entity.City = entity.City?.DecodeString(key);
-            entity.Email = entity.Email?.DecodeString(key);
-            entity.Phone = entity.Phone?.DecodeString(key);
-            entity.PhoneCode = entity.PhoneCode?.DecodeString(key);
-            entity.PhoneNumber = entity.PhoneNumber?.DecodeString(key);
-            entity.FirstName = entity.FirstName?.DecodeString(key);
-            entity.LastName = entity.LastName?.DecodeString(key);
-            entity.PostalCode = entity.PostalCode?.DecodeString(key);
-            entity.CountryOfCitizenship = entity.CountryOfCitizenship?.DecodeString(key);
-            entity.CountryOfResidence = entity.CountryOfResidence?.DecodeString(key);
-            entity.Address = entity.Address?.DecodeString(key);
-        }
-
-        public static string EncodeString(this string str, byte[] key)
-        {
-            var data = Encoding.UTF8.GetBytes(str);
-
-            var result = AesEncodeDecode.Encode(data, key);
-            
-            return HexConverterUtils.ToHexString(result);
-        }
-
-        public static string DecodeString(this string str, byte[] key)
-        {
-            var data = HexConverterUtils.HexStringToByteArray(str);
-            
-            return Encoding.UTF8.GetString(AesEncodeDecode.Decode(data, key));
+            entity.City = entity.City?.DecryptString(key);
+            entity.Email = entity.Email?.DecryptString(key);
+            entity.Phone = entity.Phone?.DecryptString(key);
+            entity.PhoneCode = entity.PhoneCode?.DecryptString(key);
+            entity.PhoneNumber = entity.PhoneNumber?.DecryptString(key);
+            entity.FirstName = entity.FirstName?.DecryptString(key);
+            entity.LastName = entity.LastName?.DecryptString(key);
+            entity.PostalCode = entity.PostalCode?.DecryptString(key);
+            entity.CountryOfCitizenship = entity.CountryOfCitizenship?.DecryptString(key);
+            entity.CountryOfResidence = entity.CountryOfResidence?.DecryptString(key);
+            entity.Address = entity.Address?.DecryptString(key);
         }
     }
 }

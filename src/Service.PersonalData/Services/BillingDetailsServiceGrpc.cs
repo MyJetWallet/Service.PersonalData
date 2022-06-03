@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using DotNetCoreDecorators;
 using Microsoft.EntityFrameworkCore;
@@ -50,13 +51,13 @@ namespace Service.PersonalData.Services
 
                 var result = await ctx.BillingDetails.Upsert(new BillingDetailsEntity
                 {
-                    BillingCity = billingDetails.BillingCity.EncodeString(Program.EncodingKey),
-                    BillingCountry = billingDetails.BillingCountry.EncodeString(Program.EncodingKey),
-                    BillingDistrict = billingDetails.BillingDistrict.EncodeString(Program.EncodingKey),
-                    BillingLine1 = billingDetails.BillingLine1.EncodeString(Program.EncodingKey),
-                    BillingLine2 = billingDetails.BillingLine2.EncodeString(Program.EncodingKey),
-                    BillingName = billingDetails.BillingName.EncodeString(Program.EncodingKey),
-                    BillingPostalCode = billingDetails.BillingPostalCode.EncodeString(Program.EncodingKey),
+                    BillingCity = billingDetails.BillingCity?.EncryptString(Program.EncodingKey),
+                    BillingCountry = billingDetails.BillingCountry?.EncryptString(Program.EncodingKey),
+                    BillingDistrict = billingDetails.BillingDistrict?.EncryptString(Program.EncodingKey),
+                    BillingLine1 = billingDetails.BillingLine1?.EncryptString(Program.EncodingKey),
+                    BillingLine2 = billingDetails.BillingLine2?.EncryptString(Program.EncodingKey),
+                    BillingName = billingDetails.BillingName?.EncryptString(Program.EncodingKey),
+                    BillingPostalCode = billingDetails.BillingPostalCode?.EncryptString(Program.EncodingKey),
                     ClientId = billingDetails.ClientId,
                 }).On(x => x.ClientId).RunAsync();
 
@@ -87,23 +88,24 @@ namespace Service.PersonalData.Services
                 var unencrypted = new BillingDetails
                 {
                     ClientId = request.ClientId,
-                    BillingCity = billingDetails.BillingCity.DecodeString(Program.EncodingKey),
-                    BillingCountry = billingDetails.BillingCountry.DecodeString(Program.EncodingKey),
-                    BillingDistrict = billingDetails.BillingDistrict.DecodeString(Program.EncodingKey),
-                    BillingLine1 = billingDetails.BillingLine1.DecodeString(Program.EncodingKey),
-                    BillingLine2 = billingDetails.BillingLine2.DecodeString(Program.EncodingKey),
-                    BillingName = billingDetails.BillingName.DecodeString(Program.EncodingKey),
-                    BillingPostalCode = billingDetails.BillingPostalCode.DecodeString(Program.EncodingKey),
+                    BillingCity = billingDetails.BillingCity?.DecryptString(Program.EncodingKey),
+                    BillingCountry = billingDetails.BillingCountry?.DecryptString(Program.EncodingKey),
+                    BillingDistrict = billingDetails.BillingDistrict?.DecryptString(Program.EncodingKey),
+                    BillingLine1 = billingDetails.BillingLine1?.DecryptString(Program.EncodingKey),
+                    BillingLine2 = billingDetails.BillingLine2?.DecryptString(Program.EncodingKey),
+                    BillingName = billingDetails.BillingName?.DecryptString(Program.EncodingKey),
+                    BillingPostalCode = billingDetails.BillingPostalCode?.DecryptString(Program.EncodingKey),
                 };
 
-                await _writer.InsertOrReplaceAsync(BillingDetailsNoSql.Create(unencrypted.ClientId, request.Uid, );
+                var encrypted =  unencrypted.GetEncrypted(System.Text.Encoding.UTF8.GetBytes(request.Secret));
+                await _writer.InsertOrReplaceAsync(BillingDetailsNoSql.Create(unencrypted.ClientId, request.Uid, encrypted));
 
-                return new GetBillingDetailsGrpcResponse { Ok = true };
+                return new GetBillingDetailsGrpcResponse { BillingDetails = encrypted };
             }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
-                return new GetBillingDetailsGrpcResponse { Ok = false };
+                return new GetBillingDetailsGrpcResponse { BillingDetails = null };
             }
         }
     }
