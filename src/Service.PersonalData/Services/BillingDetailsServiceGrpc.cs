@@ -61,6 +61,14 @@ namespace Service.PersonalData.Services
                     ClientId = billingDetails.ClientId,
                 }).On(x => x.ClientId).RunAsync();
 
+                var cache = await _writer.GetAsync(BillingDetailsNoSql.GeneratePartitionKey(billingDetails.ClientId));
+
+                if (cache != null)
+                    foreach (var item in cache)
+                    {
+                        await _writer.DeleteAsync(item.PartitionKey, item.RowKey);
+                    }
+
                 return new ResultGrpcResponse { Ok = true };
             }
             catch (Exception e)
@@ -97,7 +105,7 @@ namespace Service.PersonalData.Services
                     BillingPostalCode = billingDetails.BillingPostalCode?.DecryptString(Program.EncodingKey),
                 };
 
-                var encrypted =  unencrypted.GetEncrypted(System.Text.Encoding.UTF8.GetBytes(request.Secret));
+                var encrypted = unencrypted.GetEncrypted(System.Text.Encoding.UTF8.GetBytes(request.Secret));
                 await _writer.InsertOrReplaceAsync(BillingDetailsNoSql.Create(unencrypted.ClientId, request.Uid, encrypted));
 
                 return new GetBillingDetailsGrpcResponse { BillingDetails = encrypted };

@@ -23,6 +23,7 @@ namespace Service.PersonalData.Domain.Models.NoSql
                 PartitionKey = GeneratePartitionKey(clientId),
                 RowKey = GenerateRowKey(uid),
                 BillingDetails = billingDetails,
+                Expires = DateTime.UtcNow + TimeSpan.FromDays(1),
             };
         }
     }
