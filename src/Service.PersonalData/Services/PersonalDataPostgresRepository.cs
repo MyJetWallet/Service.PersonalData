@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCoreDecorators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -352,8 +353,7 @@ namespace Service.PersonalData.Services
             {
                 await using var ctx = DatabaseContext.Create(_dbContextOptionsBuilder);
                 var count = ctx.PersonalDataSet
-                    .Where(t => (t.CreatedAt >= from && t.CreatedAt <= to))
-                    .Count();
+                    .Count(t => (t.CreatedAt >= from && t.CreatedAt <= to));
 
                 return count;
             }
@@ -379,9 +379,9 @@ namespace Service.PersonalData.Services
             
             if (entity.IsDeactivated)
                 return null;
-
+            
             entity.EmailHash = string.Empty;
-            entity.Email = $"{entity.Email}_deactivated";
+            entity.Email = $"{entity.Email}_deactivated_{DateTime.UtcNow.UnixTime()}";
             entity.DeactivatedPhone = entity.Phone;
             entity.IsDeactivated = true;
             entity.Phone = String.Empty;
