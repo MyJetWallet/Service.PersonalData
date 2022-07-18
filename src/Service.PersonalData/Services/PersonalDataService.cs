@@ -490,7 +490,10 @@ namespace Service.PersonalData.Services
                 After = String.Empty
             };
 
-            await _personalDataRepository.DeactivateClientAsync(request.Id, Program.EncodingKey);
+            var updatedPd = await _personalDataRepository.DeactivateClientAsync(request.Id, Program.EncodingKey);
+            
+            if (updatedPd != null)
+				_personalDataCache.UpdateCache(updatedPd);
 
             await _auditLogService.RegisterEventAsync(log);
             await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
@@ -502,12 +505,13 @@ namespace Service.PersonalData.Services
                 UnixDateTime = DateTime.UtcNow.UnixTime(),
                 Message = "Personal data client deactivation"
             });
-            await _publisher.PublishAsync(new PersonalDataUpdateMessage()
+
+            await _publisher.PublishAsync(new PersonalDataUpdateMessage
             {
                 TraderId = request.Id
             });
             
-            return new ResultGrpcResponse()
+            return new ResultGrpcResponse
             {
                 Ok = true
             };
