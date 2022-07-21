@@ -1,26 +1,13 @@
 using System;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Text.Unicode;
 using System.Threading.Tasks;
-using DotNetCoreDecorators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyJetWallet.Sdk.Service;
-using MyJetWallet.Sdk.ServiceBus;
 using MyNoSqlServer.Abstractions;
-using MyServiceBus.Abstractions;
-using Newtonsoft.Json;
-using Service.AuditLog.Grpc;
-using Service.AuditLog.Grpc.Models;
-using Service.ClientAuditLog.Domain.Models;
 using Service.PersonalData.Domain.Models;
 using Service.PersonalData.Domain.Models.NoSql;
-using Service.PersonalData.Domain.Models.ServiceBus;
 using Service.PersonalData.Grpc;
 using Service.PersonalData.Grpc.Contracts;
 using Service.PersonalData.Grpc.Models;
-using Service.PersonalData.Mappers;
 using Service.PersonalData.Postgres;
 using Service.PersonalData.Postgres.Models;
 

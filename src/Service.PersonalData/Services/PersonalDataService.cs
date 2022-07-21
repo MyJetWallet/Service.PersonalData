@@ -6,10 +6,6 @@ using DotNetCoreDecorators;
 using Microsoft.Extensions.Logging;
 using MyJetWallet.Sdk.Service;
 using MyJetWallet.Sdk.ServiceBus;
-using MyServiceBus.Abstractions;
-using Newtonsoft.Json;
-using Service.AuditLog.Grpc;
-using Service.AuditLog.Grpc.Models;
 using Service.ClientAuditLog.Domain.Models;
 using Service.PersonalData.Domain.Models.ServiceBus;
 using Service.PersonalData.Grpc;
@@ -24,24 +20,17 @@ namespace Service.PersonalData.Services
     {
         private readonly PersonalDataPostgresRepository _personalDataRepository;
         private readonly ILogger<PersonalDataService> _logger;
-        private readonly IAuditLogServiceGrpc _auditLogService;
-        private readonly PersonalDataCache _personalDataCache;
+	    private readonly PersonalDataCache _personalDataCache;
         private readonly IServiceBusPublisher<PersonalDataUpdateMessage> _publisher;
         private readonly IServiceBusPublisher<ClientAuditLogModel> _auditLogPublisher;
 
-        public PersonalDataService(PersonalDataPostgresRepository personalDataRepository, ILogger<PersonalDataService> logger, IAuditLogServiceGrpc auditLogService, PersonalDataCache personalDataCache, IServiceBusPublisher<PersonalDataUpdateMessage> publisher, IServiceBusPublisher<ClientAuditLogModel> auditLogPublisher)
+        public PersonalDataService(PersonalDataPostgresRepository personalDataRepository, ILogger<PersonalDataService> logger, PersonalDataCache personalDataCache, IServiceBusPublisher<PersonalDataUpdateMessage> publisher, IServiceBusPublisher<ClientAuditLogModel> auditLogPublisher)
         {
             _personalDataRepository = personalDataRepository;
             _logger = logger;
-            _auditLogService = auditLogService;
-            _personalDataCache = personalDataCache;
+	        _personalDataCache = personalDataCache;
             _publisher = publisher;
             _auditLogPublisher = auditLogPublisher;
-        }
-
-        private static string ToJson(object data)
-        {
-            return JsonConvert.SerializeObject(data);
         }
 
         public async ValueTask<ResultGrpcResponse> RegisterAsync(RegisterPersonalDataGrpcModel request)
@@ -53,22 +42,6 @@ namespace Service.PersonalData.Services
                 var pd = request.ToDomainModel(isInternal);
 
                 await _personalDataRepository.CreateAsync(pd, Program.EncodingKey);
-
-                var logData = ToJson(pd);
-
-                var log = new AuditLogGrpcModel
-                {
-                    TraderId = request.Id,
-                    ProcessId = request.AuditLog.ProcessId,
-                    Ip = request.AuditLog.Ip,
-                    ServiceName = request.AuditLog.ServiceName,
-                    Context = request.AuditLog.Context,
-                    Before = string.Empty,
-                    UpdatedData = logData,
-                    After = logData
-                };
-
-                await _auditLogService.RegisterEventAsync(log);
 
                 await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
                 {
@@ -95,9 +68,6 @@ namespace Service.PersonalData.Services
             try
             {
                 string updatedFields = string.Empty;
-
-                var pd = await _personalDataRepository.GetByIdAsync(request.Id,
-                    Program.EncodingKey);
 
                 await _personalDataRepository.UpdateAsync(new PersonalDataPostgresUpdateEntity
                 {
@@ -168,26 +138,13 @@ namespace Service.PersonalData.Services
                 var updatedPd =
                     await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
                 
-                var log = new AuditLogGrpcModel
-                {
-                    TraderId = request.Id,
-                    ProcessId = request.AuditLog.ProcessId,
-                    Ip = request.AuditLog.Ip,
-                    ServiceName = request.AuditLog.ServiceName,
-                    Context = request.AuditLog.Context,
-                    Before = ToJson(pd),
-                    UpdatedData = ToJson(request),
-                    After = ToJson(updatedPd)
-                };
-
-                await _auditLogService.RegisterEventAsync(log);
                 await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
                 {
                     Module = "PersonalData",
                     EventId = request.AuditLog.ProcessId,
                     Data = new
                     {
-                        AuditLog = request.AuditLog,
+	                    request.AuditLog,
                         UpdatedFields = updatedFields,
                     }.ToJson(),
                     ClientId = request.Id,
@@ -214,28 +171,12 @@ namespace Service.PersonalData.Services
         {
             try
             {
-                var pd = await _personalDataRepository.GetByIdAsync(request.Id,
-                    Program.EncodingKey);
-
                 await _personalDataRepository.ConfirmAsync(request.Id, request.Confirm,
                     Program.EncodingKey);
 
                 var updatedPd =
                     await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
 
-                var log = new AuditLogGrpcModel
-                {
-                    TraderId = request.Id,
-                    ProcessId = string.Empty,
-                    Ip = request.AuditLog.Ip,
-                    ServiceName = request.AuditLog.ServiceName,
-                    Context = request.AuditLog.Context,
-                    Before = ToJson(pd),
-                    UpdatedData = ToJson(request),
-                    After = ToJson(updatedPd),
-                };
-
-                await _auditLogService.RegisterEventAsync(log);
                 await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
                 {
                     Module = "PersonalData",
@@ -262,28 +203,12 @@ namespace Service.PersonalData.Services
         {
             try
             {
-                var pd = await _personalDataRepository.GetByIdAsync(request.Id,
-                    Program.EncodingKey);
-
                 await _personalDataRepository.ConfirmPhoneAsync(request.Id, request.Confirm,
                     Program.EncodingKey);
 
                 var updatedPd =
                     await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
 
-                var log = new AuditLogGrpcModel
-                {
-                    TraderId = request.Id,
-                    ProcessId = string.Empty,
-                    Ip = request.AuditLog.Ip,
-                    ServiceName = request.AuditLog.ServiceName,
-                    Context = request.AuditLog.Context,
-                    Before = ToJson(pd),
-                    UpdatedData = ToJson(request),
-                    After = ToJson(updatedPd),
-                };
-                
-                await _auditLogService.RegisterEventAsync(log);
                 await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
                 {
                     Module = "PersonalData",
@@ -308,27 +233,12 @@ namespace Service.PersonalData.Services
 
         public async ValueTask UpdateKycAsync(UpdateKycGrpcContract request)
         {
-            var pd = await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
-
             await _personalDataRepository.UpdateKycAsync(request.Id, request.Kyc,
                 Program.EncodingKey);
 
             var updatedPd =
                 await _personalDataRepository.GetByIdAsync(request.Id, Program.EncodingKey);
 
-            var log = new AuditLogGrpcModel
-            {
-                TraderId = request.Id,
-                ProcessId = request.AuditLog.ProcessId,
-                Ip = request.AuditLog.Ip,
-                ServiceName = request.AuditLog.ServiceName,
-                Context = request.AuditLog.Context,
-                Before = ToJson(pd),
-                UpdatedData = ToJson(request.Kyc),
-                After = ToJson(updatedPd),
-            };
-
-            await _auditLogService.RegisterEventAsync(log);
             await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
             {
                 Module = "PersonalData",
@@ -386,11 +296,10 @@ namespace Service.PersonalData.Services
             return response;
         }
 
-        public async ValueTask<GetTotalResponse> GetTotalAsync() =>
-            new GetTotalResponse
-            {
-                TotalPersonalDatas = await _personalDataRepository.GetTotalAsync()
-            };
+	    public async ValueTask<GetTotalResponse> GetTotalAsync() => new()
+	    {
+		    TotalPersonalDatas = await _personalDataRepository.GetTotalAsync()
+	    };
         
         public async ValueTask<PersonalDataBatchResponseContract> GetByPhoneList(GetByPhoneRequest request)
         {
@@ -428,21 +337,6 @@ namespace Service.PersonalData.Services
 
                 await _personalDataRepository.CreateAsync(pd, Program.EncodingKey);
 
-                var logData = ToJson(pd);
-
-                var log = new AuditLogGrpcModel
-                {
-                    TraderId = request.Id,
-                    ProcessId = request.AuditLog.ProcessId,
-                    Ip = request.AuditLog.Ip,
-                    ServiceName = request.AuditLog.ServiceName,
-                    Context = request.AuditLog.Context,
-                    Before = string.Empty,
-                    UpdatedData = logData,
-                    After = logData
-                };
-
-                await _auditLogService.RegisterEventAsync(log);
                 await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
                 {
                     Module = "PersonalData",
@@ -468,7 +362,7 @@ namespace Service.PersonalData.Services
 
         public async ValueTask<GetTotalResponse> GetTotalByDateAsync(GetTotalByDateRequest request)
         {
-            return new GetTotalResponse()
+            return new GetTotalResponse
             {
                 TotalPersonalDatas = await _personalDataRepository
                     .GetTotalByDateAsync(request.From, request.To)
@@ -478,24 +372,12 @@ namespace Service.PersonalData.Services
         public async ValueTask<ResultGrpcResponse> DeactivateClientAsync(DeactivateClientRequest request)
         {
             _logger.LogWarning("Deactivate client: {clientId}", request.Id);
-            var log = new AuditLogGrpcModel
-            {
-                TraderId = request.Id,
-                ProcessId = request.AuditLog?.ProcessId,
-                Ip = request.AuditLog?.Ip,
-                ServiceName = request.AuditLog?.ServiceName,
-                Context = request.AuditLog?.Context,
-                Before = string.Empty,
-                UpdatedData = String.Empty,
-                After = String.Empty
-            };
 
             var updatedPd = await _personalDataRepository.DeactivateClientAsync(request.Id, Program.EncodingKey);
             
             if (updatedPd != null)
 				_personalDataCache.UpdateCache(updatedPd);
 
-            await _auditLogService.RegisterEventAsync(log);
             await _auditLogPublisher.PublishAsync(new ClientAuditLogModel
             {
                 Module = "PersonalData",
