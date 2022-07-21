@@ -378,7 +378,7 @@ namespace Service.PersonalData.Services
                 return null;
             
             if (entity.IsDeactivated)
-                return null;
+                return entity;
             
             entity.EmailHash = string.Empty;
             entity.Email = $"{entity.Email}_deactivated_{DateTime.UtcNow.UnixTime()}";
