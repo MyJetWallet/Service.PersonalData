@@ -17,9 +17,6 @@ namespace Service.PersonalData.Settings
         [YamlProperty("PersonalData.AzureStoragePdConnString")]
         public string AzureStoragePdConnString { get; set; }
 
-        [YamlProperty("PersonalData.AuditLogServiceUrl")]
-        public string AuditLogServiceUrl { get; set; }
-
         [YamlProperty("PersonalData.PostgresConnectionString")]
         public string PostgresConnectionString { get; set; }
 
