@@ -395,6 +395,8 @@ namespace Service.PersonalData.Services
             ctx.PersonalDataSet.Update(entity);
             await ctx.SaveChangesAsync();
 
+            entity.Decode(encodingKey);
+
             return entity;
         }
     }
